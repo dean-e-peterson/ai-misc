@@ -72,8 +72,12 @@ Other possible small models to try
 - Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF
 - Qwen/Qwen3-Coder-30B-A3B-Instruct
 
-Listing models from Huggingface repository or cache with `hf` command.
+Listing cached (downloaded) models (see ~/.cache/huggingface) with `llama fit-params -cl`
+```
+llama fit-params -cl
+```
 
+Listing models from Huggingface repository or cache with `hf` command.
 ```
 PS D:\src\github> python -m venv .\ai-misc\
 PS D:\src\github> .\ai-misc\Scripts\activate
@@ -83,4 +87,9 @@ PS D:\src\github> .\ai-misc\Scripts\activate
 (ai-misc) PS D:\src\github> hf models list --search gemma --no-truncate | less -S
 (ai-misc) PS D:\src\github> hf cache list
 (ai-misc) PS D:\src\github> hf download Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF
+```
+
+```
+llama fit-params -hf ggml-org/Qwen3.5-0.8B-GGUF
+llama fit-params -hf ggml-org/Qwen3.5-0.8B-GGUF -fitp on
 ```
