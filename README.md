@@ -1,5 +1,9 @@
 # ai-misc
 
+## llama
+
+Lighter than ollama I think.
+
 ```
 winget install llama.cpp
 ```
@@ -31,8 +35,7 @@ Command line alias added: "llama-tokenize"
 Command line alias added: "llama-tts"
 Successfully installed
 ```
-
-### Try cpu instead of vulkan due to small GPU memory on atacama?
+? Try cpu instead of vulkan due to small GPU memory on atacama?
 
 Intel Graphics Command Center on atacama says that my Intel HD Graphics 620
 has 128 MB of dedicated graphics memory and 16 MB of shared memory.
@@ -92,4 +95,26 @@ PS D:\src\github> .\ai-misc\Scripts\activate
 ```
 llama fit-params -hf ggml-org/Qwen3.5-0.8B-GGUF
 llama fit-params -hf ggml-org/Qwen3.5-0.8B-GGUF -fitp on
+```
+
+## llama.vscode extension
+
+Hugging Face FIM (fill in the middle) recommended local model collection:
+
+https://huggingface.co/collections/ggml-org/llamavim
+
+## Model ideas
+
+https://kimi.ai
+- Non fim
+```
+llama cli -hf bartowski/google_gemma-4-E2B-it-GGUF:Q4_K_M
+```
+- Fim
+```
+llama serve -hf Qwen/Qwen2.5-Coder-3B-Instruct-GGUF:Q4_K_M
+```
+
+```
+llama serve -hf ggml-org/Qwen2.5-Coder-0.5B-Q8_0-GGUF -c 12288 -ub 256 -b 256 --cache-reuse 256
 ```
