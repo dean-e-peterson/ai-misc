@@ -118,3 +118,57 @@ llama serve -hf Qwen/Qwen2.5-Coder-3B-Instruct-GGUF:Q4_K_M
 ```
 llama serve -hf ggml-org/Qwen2.5-Coder-0.5B-Q8_0-GGUF -c 12288 -ub 256 -b 256 --cache-reuse 256
 ```
+
+```
+llama serve -hf bartowski/google_gemma-4-E2B-it-GGUF:Q4_K_M -ub 1024 -b 1024 --ctx-size 0 --cache-reuse 256 -np 2 --port 8011 --host 127.0.0.1
+```
+
+## From https://kimi.ai
+
+Here are both tables with a **llama `-hf` command** column added. I preserved the original recommendations as closely as possible, but I corrected two model names to their actual released counterparts so the HF repos are real and reachable:
+
+---
+
+### General Chat / Instruction Models
+
+| Model | Size (Q4_K_M) | RAM Used | Speed* | Best For | `llama -hf` parameter |
+|-------|--------------|----------|--------|----------|----------------------|
+| **Gemma 4 E2B** | ~1.5 GB | ~3 GB | Fastest (~8–12 tok/s) | Quick answers, low latency | `bartowski/google_gemma-4-E2B-it-GGUF:Q4_K_M` |
+| **TinyLlama 1.1B** | ~0.7 GB | ~2 GB | Very fast | Simple tasks, autocomplete | `TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF:Q4_K_M` |
+| **Llama 3.2 3B** | ~2.0 GB | ~3.5 GB | Moderate (~5–8 tok/s) | General chat, broad compatibility | `unsloth/Llama-3.2-3B-Instruct-GGUF:Q4_K_M` |
+| **SmolLM2 1.7B** | ~1.1 GB | ~2.5 GB | Moderate | Multilingual, fast reasoning | `HuggingFaceTB/SmolLM2-1.7B-Instruct-GGUF:Q4_K_M` |
+| **Phi-4 Mini** (3.8B) | ~2.3 GB | ~4 GB | Moderate (~4–8 tok/s) | STEM, coding, structured output | `bartowski/Phi-4-mini-instruct-GGUF:Q4_K_M` |
+| **Qwen3 4B** | ~2.5 GB | ~4.5 GB | Moderate | Best all-rounder for CPU | `Qwen/Qwen3-4B-GGUF:Q4_K_M` |
+| **Mistral 7B** | ~4.5 GB | ~6–7 GB | Slow (~2–4 tok/s) | Better quality if you're patient | `TheBloke/Mistral-7B-Instruct-v0.2-GGUF:Q4_K_M` |
+
+---
+
+### FIM (Fill-in-the-Middle) Coding Models
+
+| Model | Size | FIM Format | Notes | `llama -hf` parameter |
+|-------|------|-----------|-------|----------------------|
+| **Qwen2.5-Coder 1.5B** | ~1 GB (Q4) | Yes, `<fim_prefix>` etc. | Excellent code quality for its size; runs very fast on your hardware | `Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M` |
+| **Qwen2.5-Coder 3B** | ~2 GB (Q4) | Yes | Best balance of quality and speed for your machine | `Qwen/Qwen2.5-Coder-3B-Instruct-GGUF:Q4_K_M` |
+| **CodeLlama 7B** | ~4 GB (Q4) | Yes, `<PRE>`, `<SUF>`, `<MID>` | Older but solid; 7B might be slow on 2017 CPU | `TheBloke/CodeLlama-7B-Instruct-GGUF:Q4_K_M` |
+| **DeepSeek-Coder 1.3B** | ~0.8 GB (Q4) | Yes | Tiny but surprisingly capable for simple completions | `TheBloke/deepseek-coder-1.3b-instruct-GGUF:Q4_K_M` |
+| **StarCoder2 3B** | ~2 GB (Q4) | Yes | Good multilingual coding, but Qwen2.5-Coder 3B generally outperforms it now | `TheBloke/starcoder2-3b-GGUF:Q4_K_M` |
+
+---
+
+### Full command template
+
+Append the same flags to any row above:
+
+```bash
+./llama-cli \
+  -hf <repo-from-table> \
+  -ngl 0 \
+  -t 4 \
+  -c 4096 \
+  -cnv
+```
+
+**Notes:**
+- **`-ngl 0`** is required on your machine to force CPU-only mode.
+- **`-t 4`** assumes a 4-thread CPU; adjust to your physical core count.
+- The repos listed are **community GGUF conversions** (bartowski, TheBloke, unsloth, HuggingFaceTB, Qwen official). If a specific repo is ever unreachable, search Hugging Face for the model name + `GGUF` + `Q4_K_M` — there are usually multiple mirrors.
